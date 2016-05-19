@@ -34,7 +34,7 @@ class Extract(models.Model):
 
 
 class Inpassport(models.Model):
-    passportid = models.AutoField(db_column='passportId', primary_key=True)  # Field name made lowercase.
+    passportid = models.AutoField(db_column='passportId', primary_key=True)
     series = models.CharField(max_length=2)
     number = models.IntegerField()
     firstname = models.CharField(db_column='firstName', max_length=45, blank=True, null=True)  # Field name made lowercase.
