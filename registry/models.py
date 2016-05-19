@@ -1,20 +1,13 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 
 from django.db import models
 
 
 class Checkedindata(models.Model):
-    entryid = models.AutoField(db_column='entryId', unique=True, primary_key=True)  # Field name made lowercase.
-    passid = models.ForeignKey('Inpassport', models.DO_NOTHING, db_column='passId')  # Field name made lowercase.
-    reqid = models.ForeignKey('Request', models.DO_NOTHING, db_column='reqId')  # Field name made lowercase.
-    isvalid = models.IntegerField(db_column='isValid', blank=True, null=True)  # Field name made lowercase.
+    entryid = models.AutoField(db_column='entryId', unique=True, primary_key=True)
+    passid = models.ForeignKey('Inpassport', models.DO_NOTHING, db_column='passId')
+    reqid = models.ForeignKey('Request', models.DO_NOTHING, db_column='reqId')
+    isvalid = models.IntegerField(db_column='isValid', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -23,16 +16,16 @@ class Checkedindata(models.Model):
 
 
 class Extract(models.Model):
-    extractid = models.AutoField(db_column='extractId', unique=True, primary_key=True)  # Field name made lowercase.
+    extractid = models.AutoField(db_column='extractId', unique=True, primary_key=True)
     number = models.IntegerField(unique=True)
-    formingdate = models.DateField(db_column='formingDate', blank=True, null=True)  # Field name made lowercase.
-    applicantinfo = models.CharField(db_column='ApplicantInfo', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    extractscol = models.CharField(db_column='Extractscol', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    requestid = models.ForeignKey('Request', models.DO_NOTHING, db_column='requestId')  # Field name made lowercase.
+    formingdate = models.DateField(db_column='formingDate', blank=True, null=True)
+    applicantinfo = models.CharField(db_column='ApplicantInfo', max_length=255, blank=True, null=True)
+    extractscol = models.CharField(db_column='Extractscol', max_length=45, blank=True, null=True)
+    requestid = models.ForeignKey('Request', models.DO_NOTHING, db_column='requestId')
     personid = models.ForeignKey('Person', models.DO_NOTHING, db_column='personId')
-    personwhomadeextract = models.CharField(db_column='PersonWhoMadeExtract', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    personwhosignsextract = models.CharField(db_column='PersonWhoSignsExtract', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    personswhosignsextractpost = models.CharField(db_column='PersonsWhoSignsExtractPost', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    personwhomadeextract = models.CharField(db_column='PersonWhoMadeExtract', max_length=255, blank=True, null=True)
+    personwhosignsextract = models.CharField(db_column='PersonWhoSignsExtract', max_length=255, blank=True, null=True)
+    personswhosignsextractpost = models.CharField(db_column='PersonsWhoSignsExtractPost', max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
