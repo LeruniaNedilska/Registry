@@ -11,9 +11,18 @@ class Checkedindata(models.Model):
     reqid = models.ForeignKey('Request', models.DO_NOTHING, db_column='reqId')
     isvalid = models.IntegerField(db_column='isValid', blank=True, null=True)
 
+    list_display = ('entryId', 'passId', 'Request', 'isValid')
+
+    def __str__(self):
+        return self.passid.firstname + ' '\
+            + self.passid.lastname + ' : '\
+            + self.reqid.firstname + ' '\
+            + self.reqid.lastname
+
     class Meta:
         managed = False
         db_table = 'checkedindata'
+        ordering = ('entryid',)
         unique_together = (('entryid', 'passid', 'reqid'),)
 
 
@@ -31,9 +40,14 @@ class Extract(models.Model):
     personswhosignsextractpost = models.CharField(db_column='PersonsWhoSignsExtractPost', max_length=255, blank=True,
                                                   null=True)
 
+    def __str__(self):
+        return str(self.extractid) + ' ' + self.personid.passportid.firstname\
+            + ' ' + self.personid.passportid.lastname
+
     class Meta:
         managed = False
         db_table = 'extract'
+        ordering = ('extractid',)
         unique_together = (('extractid', 'requestid'),)
 
 
@@ -50,8 +64,12 @@ class Inpassport(models.Model):
     givendate = models.DateField(db_column='givenDate', blank=True, null=True)
     givenby = models.CharField(db_column='givenBy', max_length=45, blank=True, null=True)
 
+    def __str__(self):
+        return self.firstname + ' ' + self.lastname
+
     class Meta:
         managed = False
+        ordering = ('passportid',)
         db_table = 'inpassport'
 
 
@@ -66,9 +84,14 @@ class Negativereference(models.Model):
                                                     blank=True, null=True)
     negativereferencecol = models.CharField(db_column='NegativeReferencecol', max_length=45, blank=True, null=True)
 
+    def __str__(self):
+        return str(self.referenceid) + ' ' + self.requestid.firstname\
+            + ' ' + self.requestid.lastname + ' negative'
+
     class Meta:
         managed = False
         db_table = 'negativereference'
+        ordering = ('referenceid',)
         unique_together = (('referenceid', 'requestid'),)
 
 
@@ -82,12 +105,14 @@ class Person(models.Model):
     passportid = models.ForeignKey('Registeredpassport', models.DO_NOTHING, db_column='passportID')
     taxcode = models.IntegerField(db_column='TaxCode', blank=True, null=True)
 
+
     def __str__(self):
         return self.passportid.firstname + ' ' + self.passportid.lastname + ' ' + self.workplace + ' ' + self.workpost
 
     class Meta:
         managed = False
         db_table = 'person'
+        ordering = ('personid',)
         unique_together = (('personid', 'passportid'),)
 
 
@@ -101,8 +126,14 @@ class Positivereference(models.Model):
     personswhosignsreferencepost = models.CharField(db_column='PersonsWhoSignsReferencePost', max_length=255,
                                                     blank=True, null=True)
 
+    def __str__(self):
+        return str(self.referenceid) + ' ' + self.requestid.firstname \
+               + ' ' + self.requestid.lastname + ' positive'
+
+
     class Meta:
         managed = False
+        ordering = ('idreference',)
         db_table = 'positivereference'
 
 
@@ -119,8 +150,12 @@ class Registeredpassport(models.Model):
     givendate = models.DateField(db_column='givenDate', blank=True, null=True)
     givenby = models.CharField(db_column='givenBy', max_length=45, blank=True, null=True)
 
+    def __str__(self):
+        return self.firstname + ' ' + self.lastname
+
     class Meta:
         managed = False
+        ordering = ('passportid',)
         db_table = 'registeredpassport'
 
 
@@ -138,6 +173,13 @@ class Request(models.Model):
     servicenotes = models.TextField(db_column='serviceNotes', blank=True, null=True)
     taxcode = models.IntegerField(db_column='TaxCode', blank=True, null=True)
 
+    def __str__(self):
+        return str(self.requestid) + ' '\
+            + self.purpose + ' ' \
+            + self.firstname + ' ' \
+            + self.lastname + ' '
+
     class Meta:
         managed = False
+        ordering = ('requestid',)
         db_table = 'request'
