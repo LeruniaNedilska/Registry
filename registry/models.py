@@ -11,8 +11,6 @@ class Checkedindata(models.Model):
     reqid = models.ForeignKey('Request', models.DO_NOTHING, db_column='reqId')
     isvalid = models.IntegerField(db_column='isValid', blank=True, null=True)
 
-    list_display = ('entryId', 'passId', 'Request', 'isValid')
-
     def __str__(self):
         return self.passid.firstname + ' '\
             + self.passid.lastname + ' : '\
@@ -32,7 +30,6 @@ class Extract(models.Model):
     number = models.IntegerField(unique=True)
     formingdate = models.DateField(db_column='formingDate', blank=True, null=True)
     applicantinfo = models.CharField(db_column='ApplicantInfo', max_length=255, blank=True, null=True)
-    extractscol = models.CharField(db_column='Extractscol', max_length=45, blank=True, null=True)
     requestid = models.ForeignKey('Request', models.DO_NOTHING, db_column='requestId')
     personid = models.ForeignKey('Person', models.DO_NOTHING, db_column='personId')
     personwhomadeextract = models.CharField(db_column='PersonWhoMadeExtract', max_length=255, blank=True, null=True)
@@ -82,7 +79,6 @@ class Negativereference(models.Model):
                                                null=True)
     personswhosignsreferencepost = models.CharField(db_column='PersonsWhoSignsReferencePost', max_length=255,
                                                     blank=True, null=True)
-    negativereferencecol = models.CharField(db_column='NegativeReferencecol', max_length=45, blank=True, null=True)
 
     def __str__(self):
         return str(self.referenceid) + ' ' + self.requestid.firstname\
@@ -119,6 +115,7 @@ class Person(models.Model):
 @python_2_unicode_compatible
 class Positivereference(models.Model):
     idreference = models.AutoField(db_column='idReference', primary_key=True)
+    requestid = models.ForeignKey('Request', models.DO_NOTHING, db_column='requestId')
     personid = models.ForeignKey('Person', models.DO_NOTHING, db_column='personId')
     personwhomadereference = models.CharField(db_column='PersonWhoMadeReference', max_length=255, blank=True, null=True)
     personwhosignsreference = models.CharField(db_column='PersonWhoSignsReference', max_length=255, blank=True,
@@ -127,7 +124,7 @@ class Positivereference(models.Model):
                                                     blank=True, null=True)
 
     def __str__(self):
-        return str(self.referenceid) + ' ' + self.requestid.firstname \
+        return str(self.idreference) + ' ' + self.requestid.firstname \
                + ' ' + self.requestid.lastname + ' positive'
 
 
