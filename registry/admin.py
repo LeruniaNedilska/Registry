@@ -2,10 +2,14 @@ from django.contrib import admin
 
 from models import *
 
+# encoding=utf8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 
 class CheckedDataAdmin(admin.ModelAdmin):
     list_display = (
-        'entryid',
         'passid',
         'reqid',
         'isvalid'
@@ -28,7 +32,6 @@ class CheckedDataAdmin(admin.ModelAdmin):
 
 class RPassportAdmin(admin.ModelAdmin):
     list_display = (
-        'passportid',
         'series',
         'number',
         'firstname',
@@ -43,9 +46,9 @@ class RPassportAdmin(admin.ModelAdmin):
         'birthdate'
     )
 
+
 class InPassportAdmin(admin.ModelAdmin):
     list_display = (
-        'passportid',
         'series',
         'number',
         'firstname',
@@ -63,7 +66,6 @@ class InPassportAdmin(admin.ModelAdmin):
 
 class ExtractAdmin(admin.ModelAdmin):
     list_display = (
-        'extractid',
         'number',
         'formingdate',
         'personid',
@@ -92,7 +94,6 @@ class ExtractAdmin(admin.ModelAdmin):
 
 class PersonAdmin(admin.ModelAdmin):
     list_display = (
-        'personid',
         'passportid',
         'workplace',
         'workpost',
@@ -114,7 +115,6 @@ class PersonAdmin(admin.ModelAdmin):
 
 class NReferenceAdmin(admin.ModelAdmin):
     list_display = (
-        'referenceid',
         'requestid',
     )
     search_fields = (
@@ -128,7 +128,6 @@ class NReferenceAdmin(admin.ModelAdmin):
 
 class PReferenceAdmin(admin.ModelAdmin):
     list_display = (
-        'idreference',
         'requestid',
         'personid',
     )
@@ -152,7 +151,6 @@ class PReferenceAdmin(admin.ModelAdmin):
 
 class RequestAdmin(admin.ModelAdmin):
     list_display = (
-        'requestid',
         'date',
         'firstname',
         'lastname',
