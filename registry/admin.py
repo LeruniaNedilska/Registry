@@ -43,7 +43,7 @@ class RPassportAdmin(admin.ModelAdmin):
         'number',
         'firstname',
         'lastname',
-        'birthdate'
+        'birthdate',
     )
 
 
@@ -60,7 +60,7 @@ class InPassportAdmin(admin.ModelAdmin):
         'number',
         'firstname',
         'lastname',
-        'birthdate'
+        'birthdate',
     )
 
 

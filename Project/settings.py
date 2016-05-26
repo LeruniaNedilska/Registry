@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'lustrationregistry',
         'USER': 'root',
-        'PASSWORD': '2319',
+        'PASSWORD': 'soft',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
