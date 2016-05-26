@@ -115,7 +115,6 @@ class NReferenceAdmin(admin.ModelAdmin):
     list_display = (
         'referenceid',
         'requestid',
-        'negativereferencecol',
     )
     search_fields = (
         'requestid__date',
@@ -123,8 +122,6 @@ class NReferenceAdmin(admin.ModelAdmin):
         'requestid__lastname',
         'requestid__purpose',
         'requestid__applicantinfo',
-
-        'negativereferencecol',
     )
 
 
