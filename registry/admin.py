@@ -12,9 +12,9 @@ class CheckedDataAdmin(admin.ModelAdmin):
     )
     search_fields = (
         'passid__firstname',
-        'passid__lastname'
-        'passid__series'
-        'passid__number'
+        'passid__lastname',
+        'passid__series',
+        'passid__number',
 
         'reqid__date',
         'reqid__firstname',
@@ -74,9 +74,9 @@ class ExtractAdmin(admin.ModelAdmin):
         'formingdate',
 
         'personid__passportid__firstname',
-        'personid__passportid__lastname'
-        'personid__passportid__series'
-        'personid__passportid__number'
+        'personid__passportid__lastname',
+        'personid__passportid__series',
+        'personid__passportid__number',
         'personid__workplace',
         'personid__workpost',
         'personid__checkresult',
@@ -96,14 +96,15 @@ class PersonAdmin(admin.ModelAdmin):
         'passportid',
         'workplace',
         'workpost',
+        'startingterm',
         'checkresult',
         'taxcode',
     )
     search_fields = (
         'passportid__firstname',
-        'passportid__lastname'
-        'passportid__series'
-        'passportid__number'
+        'passportid__lastname',
+        'passportid__series',
+        'passportid__number',
         'workplace',
         'workpost',
         'checkresult',
@@ -139,9 +140,9 @@ class PReferenceAdmin(admin.ModelAdmin):
         'requestid__applicantinfo',
 
         'personid__passportid__firstname',
-        'personid__passportid__lastname'
-        'personid__passportid__series'
-        'personid__passportid__number'
+        'personid__passportid__lastname',
+        'personid__passportid__series',
+        'personid__passportid__number',
         'personid__workplace',
         'personid__workpost',
         'personid__checkresult',
