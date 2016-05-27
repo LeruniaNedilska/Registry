@@ -8,28 +8,6 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-class CheckedDataAdmin(admin.ModelAdmin):
-    list_display = (
-        'passid',
-        'reqid',
-        'isvalid'
-    )
-    search_fields = (
-        'passid__firstname',
-        'passid__lastname',
-        'passid__series',
-        'passid__number',
-
-        'reqid__date',
-        'reqid__firstname',
-        'reqid__lastname',
-        'reqid__purpose',
-        'reqid__applicantinfo',
-
-        'isvalid',
-    )
-
-
 class RPassportAdmin(admin.ModelAdmin):
     list_display = (
         'series',
@@ -152,15 +130,16 @@ class PReferenceAdmin(admin.ModelAdmin):
 class RequestAdmin(admin.ModelAdmin):
     list_display = (
         'date',
-        'firstname',
-        'lastname',
+        'passportid',
         'purpose',
         'applicantinfo',
     )
     search_fields = (
         'date',
-        'firstname',
-        'lastname',
+        'passportid__firstname',
+        'passportid__lastname',
+        'passportid__series',
+        'passportid__number',
         'purpose',
         'applicantinfo',
     )
@@ -170,7 +149,6 @@ admin.site.register(Person, PersonAdmin)
 admin.site.register(Inpassport, InPassportAdmin)
 admin.site.register(Registeredpassport, RPassportAdmin)
 admin.site.register(Extract, ExtractAdmin)
-admin.site.register(Checkedindata, CheckedDataAdmin)
 admin.site.register(Negativereference, NReferenceAdmin)
 admin.site.register(Positivereference, PReferenceAdmin)
 admin.site.register(Request, RequestAdmin)

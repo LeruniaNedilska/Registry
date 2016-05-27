@@ -8,18 +8,6 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-@python_2_unicode_compatible
-class Checkedindata(models.Model):
-    passid = models.ForeignKey('Inpassport')
-    reqid = models.ForeignKey('Request')
-    isvalid = models.IntegerField(blank=True, null=True)
-
-    def __str__(self):
-        return self.passid.firstname + ' '\
-            + self.passid.lastname + ' : '\
-            + self.reqid.firstname + ' '\
-            + self.reqid.lastname
-
 
 @python_2_unicode_compatible
 class Extract(models.Model):
@@ -111,9 +99,7 @@ class Registeredpassport(models.Model):
 class Request(models.Model):
     answertype = models.IntegerField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
-    firstname = models.CharField(max_length=255, blank=True, null=True)
-    secondname = models.CharField(max_length=255, blank=True, null=True)
-    lastname = models.CharField(max_length=255, blank=True, null=True)
+    passportid = models.ForeignKey('Inpassport', on_delete=models.CASCADE)
     purpose = models.CharField(max_length=255, blank=True, null=True)
     obtainway = models.IntegerField(blank=True, null=True)
     applicantinfo = models.CharField(max_length=255, blank=True, null=True)

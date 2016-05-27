@@ -11,9 +11,17 @@ class RequestMethodTests(TestCase):
         Request.objects.create(
             answertype='1',
             date='2016-05-12',
-            firstname='Jane',
-            secondname='Maria',
-            lastname='Doe',
+            passportid=Inpassport.objects.create(
+                series='VF',
+                number='344551',
+                firstname='Jane',
+                secondname='Maria',
+                lastname='Doe',
+                birthdate='1999-12-12',
+                birthplace='London',
+                givendate='2015-12-30',
+                givenby='London CV'
+            ),
             purpose='Work check',
             obtainway='1',
             applicantinfo='Nice person',
@@ -36,10 +44,30 @@ class RequestMethodTests(TestCase):
 
     def test_update(self):
         data = Request.objects.get()
-        data.firstname = 'Name'
+        data.purpose = 'Changed'
         data.save()
-        updated_data = Request.objects.get(firstname='Name')
+        updated_data = Request.objects.get(purpose='Changed')
         self.assertEqual(updated_data.id, data.id)
+
+    def test_delete_cascade(self):
+        try:
+            request = Request.objects.get(passportid__firstname='Jane')
+        except Request.DoesNotExist:
+            request = None
+
+        self.assertIsNotNone(request)  # is not None before foreign key delete
+
+        id = request.id
+
+        passport = Inpassport.objects.get(firstname='Jane')
+        passport.delete()
+
+        try:
+            request = Request.objects.get(pk=id)
+        except Request.DoesNotExist:
+            request = None
+
+        self.assertIsNone(request)
 
 
 class InPassportMethodTests(TestCase):
@@ -109,56 +137,6 @@ class RegisteredPassportMethodTests(TestCase):
         data.firstname = 'Name'
         data.save()
         updated_data = Registeredpassport.objects.get(firstname='Name')
-        self.assertEqual(updated_data.id, data.id)
-
-
-class CheckedInDataMethodTests(TestCase):
-    def setUp(self):
-        Checkedindata.objects.create(
-            passid=Inpassport.objects.create(
-                series='VF',
-                number='344551',
-                firstname='Jane',
-                secondname='Maria',
-                lastname='Doe',
-                birthdate='1999-12-12',
-                birthplace='London',
-                givendate='2015-12-30',
-                givenby='London CV'
-            ),
-            reqid=Request.objects.create(
-                answertype='1',
-                date='2016-05-12',
-                firstname='Jane',
-                secondname='Maria',
-                lastname='Doe',
-                purpose='Work check',
-                obtainway='1',
-                applicantinfo='Nice person',
-                servicenotes='notes',
-                taxcode='123424'
-            ),
-            isvalid='1'
-        )
-
-    def test_add(self):
-        data = Checkedindata.objects.get()
-        self.assertIsInstance(data, Checkedindata)
-
-    def test_delete(self):
-        data = Checkedindata.objects.get()
-        data.delete()
-        try:
-            obj = Checkedindata.objects.get()
-        except Checkedindata.DoesNotExist:
-            obj = None
-        self.assertIsNone(obj)
-
-    def test_update(self):
-        data = Checkedindata.objects.get()
-        data.passid.firstname = 'Name'
-        data.save()
-        updated_data = Checkedindata.objects.get(passid=Inpassport.objects.get())
         self.assertEqual(updated_data.id, data.id)
 
 
@@ -232,9 +210,17 @@ class PositiveReferenceMethodTests(TestCase):
             requestid=Request.objects.create(
                 answertype='1',
                 date='2016-05-12',
-                firstname='Jane',
-                secondname='Maria',
-                lastname='Doe',
+                passportid=Inpassport.objects.create(
+                    series='VF',
+                    number='344551',
+                    firstname='Jane',
+                    secondname='Maria',
+                    lastname='Doe',
+                    birthdate='1999-12-12',
+                    birthplace='London',
+                    givendate='2015-12-30',
+                    givenby='London CV'
+                ),
                 purpose='Work check',
                 obtainway='1',
                 applicantinfo='Nice person',
@@ -293,9 +279,17 @@ class NegativeReferenceMethodTests(TestCase):
             requestid=Request.objects.create(
                 answertype='1',
                 date='2016-05-12',
-                firstname='Jane',
-                secondname='Maria',
-                lastname='Doe',
+                passportid=Inpassport.objects.create(
+                    series='VF',
+                    number='344551',
+                    firstname='Jane',
+                    secondname='Maria',
+                    lastname='Doe',
+                    birthdate='1999-12-12',
+                    birthplace='London',
+                    givendate='2015-12-30',
+                    givenby='London CV'
+                ),
                 purpose='Work check',
                 obtainway='1',
                 applicantinfo='Nice person',
@@ -338,9 +332,17 @@ class ExtractMethodTests(TestCase):
             requestid=Request.objects.create(
                 answertype='1',
                 date='2016-05-12',
-                firstname='Jane',
-                secondname='Maria',
-                lastname='Doe',
+                passportid=Inpassport.objects.create(
+                    series='VF',
+                    number='344551',
+                    firstname='Jane',
+                    secondname='Maria',
+                    lastname='Doe',
+                    birthdate='1999-12-12',
+                    birthplace='London',
+                    givendate='2015-12-30',
+                    givenby='London CV'
+                ),
                 purpose='Work check',
                 obtainway='1',
                 applicantinfo='Nice person',
