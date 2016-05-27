@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="list-group">
+    {% for p in person %}
+       <button type="button" class="list-group-item list-group-item-info" data-toggle="collapse" data-target="#demo{{forloop.counter}}">{{ p.passportid.lastname}} {{ p.passportid.firstname }} {{ p.passportid.secondname }}</button>
+         <div class="collapse" id="demo{{ forloop.counter }}">
+         <ul class="list-group" style="color: #2980b9">
+             <li class="list-group-item"><i>Прізвище, ім'я, по-батькові:</i> {{ p.passportid.lastname}} {{ p.passportid.firstname }} {{ p.passportid.secondname }}</li>
+             <li class="list-group-item"><i>Місце роботи:</i> {{ p.workplace }}</li>
+             <li class="list-group-item"><i>Посада:</i> {{ p.workpost }}</li>
+             <li class="list-group-item"><i>Відомості про результати перевірки:</i> {{ p.checkresult }}</li>
+             <li class="list-group-item"><i>Час з якого на особу поширюється заборона, передбачена Законом України "Про очищення влади": </i>{{ p.startingterm }}</li>
+         </ul>
+        </div>
+    {% endfor %}
+</div></div>
+        <div class="col-sm-2"></div>
+</div>
+{% endblock %}
