@@ -1,0 +1,43 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Люстраційний реєстр</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body style="background-color: #ecf0f1">
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="/main" class="navbar-brand">Очищення влади</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav" >
+        <li>
+          <a href="/main">Реєстр </a>
+        </li>
+          <li>
+          <a href="/search">Пошук </a>
+        </li>
+        <li>
+          <a href="/requests">Перевірити запит</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="jumbotron" >
+    <div class="container">
+        <p class="phrase"><b>Єдиний державний реєстр осіб, щодо яких застосовано положення Закону України "Про очищення влади"</b></p>
+    </div>
+</div>
+{% block content %}
+{{ content }}
+{% endblock %}
+</body>
+</html>

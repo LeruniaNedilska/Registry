@@ -1,0 +1,48 @@
+{% extends 'request.html' %}
+
+{% block results %}
+    {% if request %}
+{% if request.isValid %}
+ <table class="table">
+                    <thead>
+                        <tr>
+                            <th >#</th>
+                            <th>Cтатус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">{{ request.id }}</th>
+                            <td>Оброблено</td>
+                        </tr>
+                    </tbody>
+                </table>
+{% else %}
+     <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Cтатус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">{{ request.id }}</th>
+                            <td>Відхилено</td>
+                        </tr>
+                    </tbody>
+                </table>
+{% endif %}
+    {% else %}
+        <br>
+        <p style="color: #2980b9; font-size:larger" align="center">Пошук не дав результатів.</p>
+    {% endif %}
+{% if not export_mode and request.isValid %}
+
+        <form method="get" action= {{ request.get_full_path }} role="form">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success" name="to_pdf_btn">Завантажити як pdf</button>
+        </form>
+
+        {% endif %}
+{% endblock %}
