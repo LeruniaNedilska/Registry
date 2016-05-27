@@ -272,6 +272,30 @@ class PositiveReferenceMethodTests(TestCase):
         )
         self.assertEqual(updated_data.id, data.id)
 
+    def test_delete_cascade(self):
+        try:
+            positivereference = Positivereference.objects.get(requestid__passportid__firstname='Jane')
+        except Positivereference.DoesNotExist:
+            positivereference = None
+
+        self.assertIsNotNone(positivereference)  # is not None before foreign key delete
+
+        id = positivereference.id
+
+        request = Request.objects.get(passportid__firstname='Jane')
+        request.delete()
+        person = Person.objects.get(passportid__firstname='Jane')
+        person.delete()
+
+        try:
+            person = Person.objects.get(pk=id)
+            request = Request.objects.get(pk=id)
+        except (Request.DoesNotExist, Person.DoesNotExist):
+            person = None
+            request = None
+        self.assertIsNone(person)
+        self.assertIsNone(request)
+
 
 class NegativeReferenceMethodTests(TestCase):
     def setUp(self):
@@ -321,6 +345,25 @@ class NegativeReferenceMethodTests(TestCase):
             personswhosignsreferencepost='Changed'
         )
         self.assertEqual(updated_data.id, data.id)
+
+    def test_delete_cascade(self):
+        try:
+            ref = Negativereference.objects.get(requestid__passportid__firstname='Jane')
+        except Negativereference.DoesNotExist:
+            ref = None
+
+        self.assertIsNotNone(ref)  # is not None before foreign key delete
+
+        id = ref.id
+
+        request = Request.objects.get(passportid__firstname='Jane')
+        request.delete()
+
+        try:
+            request = Request.objects.get(pk=id)
+        except Request.DoesNotExist:
+            request = None
+        self.assertIsNone(request)
 
 
 class ExtractMethodTests(TestCase):
@@ -393,3 +436,27 @@ class ExtractMethodTests(TestCase):
             personwhosignsextract='Changed'
         )
         self.assertEqual(updated_data.id, data.id)
+
+    def test_delete_cascade(self):
+        try:
+            extract = Extract.objects.get(requestid__passportid__firstname='Jane')
+        except Extract.DoesNotExist:
+            extract = None
+
+        self.assertIsNotNone(extract)  # is not None before foreign key delete
+
+        id = extract.id
+
+        request = Request.objects.get(passportid__firstname='Jane')
+        request.delete()
+        person = Person.objects.get(passportid__firstname='Jane')
+        person.delete()
+
+        try:
+            person = Person.objects.get(pk=id)
+            request = Request.objects.get(pk=id)
+        except (Request.DoesNotExist, Person.DoesNotExist):
+            person = None
+            request = None
+        self.assertIsNone(person)
+        self.assertIsNone(request)
