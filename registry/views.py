@@ -88,7 +88,7 @@ def request_result(request, data, type):
             extract = get_object_or_404(Extract, pk=data.id)
             if 'to_pdf_btn' in request.GET:
                 context = {'e': extract, 'export_mode': True}
-                return render_to_pdf('extract.html', context)
+                return render_to_pdf('negative_extract.html', context)
             else:
                 context = {'e' : extract, 'export_mode': False}
                 return render(request, 'request_results.html', context)
