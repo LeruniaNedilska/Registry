@@ -10,8 +10,8 @@ sys.setdefaultencoding('utf8')
 
 @python_2_unicode_compatible
 class Checkedindata(models.Model):
-    passid = models.ForeignKey('Inpassport', models.CASCADE)
-    reqid = models.ForeignKey('Request', models.CASCADE)
+    passid = models.ForeignKey('Inpassport')
+    reqid = models.ForeignKey('Request')
     isvalid = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -26,8 +26,8 @@ class Extract(models.Model):
     number = models.IntegerField(unique=True)
     formingdate = models.DateField(blank=True, null=True)
     applicantinfo = models.CharField(max_length=255, blank=True, null=True)
-    requestid = models.ForeignKey('Request', models.CASCADE)
-    personid = models.ForeignKey('Person', models.CASCADE)
+    requestid = models.ForeignKey('Request', on_delete=models.CASCADE)
+    personid = models.ForeignKey('Person', on_delete=models.CASCADE)
     personwhomadeextract = models.CharField(max_length=255, blank=True, null=True)
     personwhosignsextract = models.CharField(max_length=255, blank=True, null=True)
     personswhosignsextractpost = models.CharField(max_length=255, blank=True, null=True)
@@ -54,7 +54,7 @@ class Inpassport(models.Model):
 
 @python_2_unicode_compatible
 class Negativereference(models.Model):
-    requestid = models.ForeignKey('Request', models.CASCADE)
+    requestid = models.ForeignKey('Request', on_delete=models.CASCADE)
     personwhomadereference = models.CharField(max_length=255, blank=True, null=True)
     personwhosignsreference = models.CharField(max_length=255, blank=True, null=True)
     personswhosignsreferencepost = models.CharField(max_length=255, blank=True, null=True)
@@ -70,7 +70,7 @@ class Person(models.Model):
     workpost = models.CharField(max_length=255)
     checkresult = models.CharField(max_length=255)
     startingterm = models.DateField(blank=True, null=True)
-    passportid = models.ForeignKey('Registeredpassport', models.CASCADE)
+    passportid = models.ForeignKey('Registeredpassport', on_delete=models.CASCADE)
     taxcode = models.IntegerField(blank=True, null=True)
 
 
@@ -80,8 +80,8 @@ class Person(models.Model):
 
 @python_2_unicode_compatible
 class Positivereference(models.Model):
-    requestid = models.ForeignKey('Request', models.DO_NOTHING)
-    personid = models.ForeignKey('Person', models.DO_NOTHING)
+    requestid = models.ForeignKey('Request', on_delete=models.CASCADE)
+    personid = models.ForeignKey('Person', on_delete=models.CASCADE)
     personwhomadereference = models.CharField(max_length=255, blank=True, null=True)
     personwhosignsreference = models.CharField(max_length=255, blank=True, null=True)
     personswhosignsreferencepost = models.CharField(max_length=255, blank=True, null=True)
