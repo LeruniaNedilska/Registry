@@ -2,45 +2,91 @@ from django.contrib import admin
 
 from models import *
 
+from datetime import date
+
+# try:
+#     pos_extract = PositiveExtract.objects.get(requestid=request)
+# except PositiveExtract.DoesNotExist:
+#     try:
+#         neg_extract = NegativeExtract.objects.get(requestid=request)
+#     except NegativeExtract.DoesNotExist:
+
 # encoding=utf8
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-def generate_response(modeladmin, request, queryset):
-    pass
-#     reg = Registeredpassport.objects.all()
-#     for q in queryset:
-#         for r in reg:
-#             if q.passportid.number == r.number and q.passportid.series == r.series:
-#                 if q.answertype == 0:
-#                     Extract.objects.create(
-#                         number='4',
-#                         formingdate='2015-10-10',
-#                         applicantinfo='info',
-#                         requestid=request
-#                     )
-#                 else:
-#                     Positivereference.objects.create(
-#                         requestid=request,
-#                         personid=Person.objects.get(passportid__firstname='Jane')
-#                     )
-#                 # else:
-#                 #     Negativereference.objects.create(
-#                 #         requestid=Request.objects.create(
-#                 #             answertype='1',
-#                 #             date='2016-05-12',
-#                 #             passportid=q.passportid,
-#                 #             purpose='Work check',
-#                 #             obtainway='1',
-#                 #             applicantinfo='Nice person',
-#                 #             servicenotes='notes',
-#                 #         ),
-#                 #         personwhomadereference='first guy',
-#                 #         personwhosignsreference='second guy',
-#                 #         personswhosignsreferencepost='director'
-#                 #     )
+def generate_response(modeladmin, request, request_set):
+    reg_passports = Registeredpassport.objects.all()
+
+    for request in request_set:
+        req_passport_identifier = {request.passportid.series: request.passportid.number}
+        reg_passport_identifiers = []
+        for passport in reg_passports:
+            reg_passport_identifiers.append({passport.series: passport.number})
+
+        pos_extracts = PositiveExtract.objects.all()
+        neg_extracts = NegativeExtract.objects.all()
+
+        pos_extract = []
+        neg_extract = []
+
+        if request.answertype == 0:
+            try:
+                pos_extract = PositiveExtract.objects.get(requestid=request)
+            except PositiveExtract.DoesNotExist:
+                try:
+                    neg_extract = NegativeExtract.objects.get(requestid=request)
+                except NegativeExtract.DoesNotExist:
+                    if req_passport_identifier in reg_passport_identifiers:
+                        add_positive_response(request, reg_passports.get(series=request.passportid.series,
+                                                                         number=request.passportid.number))
+                    else:
+                        add_negative_response(request)
+        else:
+            try:
+                pos_ref = Positivereference.objects.get(requestid=request)
+            except Positivereference.DoesNotExist:
+                try:
+                    neg_ref = Negativereference.objects.get(requestid=request)
+                except Negativereference.DoesNotExist:
+                    if req_passport_identifier in reg_passport_identifiers:
+                        add_positive_response(request, reg_passports.get(series=request.passportid.series,
+                                                                         number=request.passportid.number))
+                    else:
+                        add_negative_response(request)
+generate_response.short_description = "Generate response"
+
+
+def add_positive_response(request, passport):
+    if request.answertype == 0:
+        PositiveExtract.objects.create(
+            number=request.pk,
+            formingdate=date.today(),
+            applicantinfo=request.applicantinfo,
+            requestid=request,
+            personid=passport.person_set.get()
+        )
+    else:
+        Positivereference.objects.create(
+            requestid=request,
+            personid=passport.person_set.get()
+        )
+
+
+def add_negative_response(request):
+        if request.answertype == 0:
+            NegativeExtract.objects.create(
+                number=request.pk,
+                formingdate=date.today(),
+                applicantinfo=request.applicantinfo,
+                requestid=request,
+            )
+        else:
+            Negativereference.objects.create(
+                requestid=request
+            )
 
 
 class RPassportAdmin(admin.ModelAdmin):
@@ -142,6 +188,11 @@ class PersonAdmin(admin.ModelAdmin):
         'checkresult',
         'taxcode',
     )
+    list_filter = [
+        'passportid__firstname',
+        'passportid__lastname',
+        'startingterm',
+    ]
 
 
 class NReferenceAdmin(admin.ModelAdmin):

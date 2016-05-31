@@ -28,7 +28,7 @@ class NegativeExtract(models.Model):
     requestid = models.ForeignKey('Request', on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.personid.passportid.firstname + ' ' + self.personid.passportid.lastname)
+        return str(self.requestid.passportid.firstname + ' ' + self.requestid.passportid.lastname)
 
 
 @python_2_unicode_compatible
@@ -107,4 +107,4 @@ class Request(models.Model):
     taxcode = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return str(self.purpose.encode('utf-8'))
+        return str(self.passportid.firstname + ' ' + self.passportid.lastname)
