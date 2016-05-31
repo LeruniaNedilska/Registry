@@ -1,0 +1,47 @@
+.navbar-inverse { background-color: #214371;}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .open > a { background-image: none;}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .open > a { box-shadow: none;}
+.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus { background-color: #214371}
+.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { background-color: #214371}
+.dropdown-menu { background-color: #FFFFFF}
+.navbar-inverse { background-image: none; }
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-image: none; }
+.navbar-inverse { border-color: #214371}
+.navbar-inverse .navbar-brand {
+    padding: 12px;
+    font-family: Verdana, sans-serif;
+    font-size: 25px;
+    color: #FFFFFF}
+.navbar-inverse .navbar-brand:hover { color: lightcyan}
+.navbar-inverse .navbar-nav>li>a { color: #FFFFFF}
+.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus { color: lightcyan}
+.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { font-family: Verdana, sans-serif; color: #FFFFFF}
+.navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus { color: #FFFFFF}
+.dropdown-menu>li>a { color: #333333}
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { color: #FFFFFF}
+.navbar-inverse .navbar-nav>.dropdown>a .caret { border-top-color: #999999}
+.navbar-inverse .navbar-nav>.dropdown>a:hover .caret { border-top-color: #FFFFFF}
+.navbar-inverse .navbar-nav>.dropdown>a .caret { border-bottom-color: #999999}
+.navbar-inverse .navbar-nav>.dropdown>a:hover .caret { border-bottom-color: #FFFFFF}
+
+.jumbotron {
+    background-size: contain;
+    background-color: #ecf0f1;
+    height: 150px;
+}
+
+.phrase {
+    position: relative;
+    top: 50px;
+    left: 20px;
+    color: #2980b9;
+}
+
+.person {
+    font-size: large;
+    color: #2980b9;
+}
+
+th, tr, td {
+    color: #2980b9
+}

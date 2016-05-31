@@ -1,0 +1,39 @@
+td {
+    border: none;
+    padding: 0;
+}
+
+
+.heading {
+    line-height: 1;
+    margin-bottom: 0;
+    font-size: 16pt;
+    font-family: "Times New Roman", serif;
+    font-weight: bold;
+    text-align: center;
+}
+
+.small-heading {
+    line-height: 1;
+    margin-bottom: 0;
+    font-size: 14pt;
+    font-family: "Times New Roman", serif;
+    text-align: center;
+    font-weight: bold;
+}
+
+.smaller {
+    line-height: 1;
+    margin-bottom: 0;
+    font-size: 12pt;
+    font-family: "Times New Roman", serif;
+    text-align: left;
+}
+
+.centered {
+    line-height: 1;
+    margin-bottom: 0;
+    font-size: 12pt;
+    font-family: "Times New Roman", serif;
+    text-align: center;
+}
