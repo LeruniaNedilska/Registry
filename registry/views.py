@@ -13,6 +13,10 @@ def registry(request):
     return render(request, "registry.html", {'person': person})
 
 
+def test(request):
+    return render(request, "positive_reference.html")
+
+
 def search(request):
     if request.method == 'GET':
         return render(request, "search.html")
@@ -58,16 +62,16 @@ def requests(request):
         try:
             req = Request.objects.get(id=s)
         except Request.DoesNotExist:
-            return render(request, "request.html", {'error_msg' : "Такого запиту не існує"})
+            return render(request, "request.html", {'error_msg': "Такого запиту не існує"})
         except:
-            return render(request, "request.html", {'error_msg' : "Будь ласка, введіть коректні дані."})
+            return render(request, "request.html", {'error_msg': "Будь ласка, введіть коректні дані."})
         if req.answertype == 0:
             extracts = Extract.objects.all()
             for e in extracts:
                 if e.requestid == req.id:
-                    return redirect('request_result', e, 0)
+                    return redirect('request_result', e, 1)
             else:
-                return redirect('request_result', None)
+                return redirect('request_result', None, 0)
         else:
             pos_ref = Positivereference.objects.all()
             for p in pos_ref:
@@ -88,7 +92,10 @@ def request_result(request, data, type):
             extract = get_object_or_404(Extract, pk=data.id)
             if 'to_pdf_btn' in request.GET:
                 context = {'e': extract, 'export_mode': True}
-                return render_to_pdf('negative_extract.html', context)
+                if type == 0:
+                    return render_to_pdf('negative_extract.html', context)
+                else:
+                    return render_to_pdf('positive_extract.html', context)
             else:
                 context = {'e' : extract, 'export_mode': False}
                 return render(request, 'request_results.html', context)
