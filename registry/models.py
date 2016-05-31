@@ -10,18 +10,25 @@ sys.setdefaultencoding('utf8')
 
 
 @python_2_unicode_compatible
-class Extract(models.Model):
+class PositiveExtract(models.Model):
     number = models.IntegerField(unique=True)
     formingdate = models.DateField(blank=True, null=True)
     applicantinfo = models.CharField(max_length=255, blank=True, null=True)
     requestid = models.ForeignKey('Request', on_delete=models.CASCADE)
     personid = models.ForeignKey('Person', on_delete=models.CASCADE)
-    personwhomadeextract = models.CharField(max_length=255, blank=True, null=True)
-    personwhosignsextract = models.CharField(max_length=255, blank=True, null=True)
-    personswhosignsextractpost = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return str(self.personid.passportid.firstname + ' ' + self.personid.passportid.lastname)
+
+
+class NegativeExtract(models.Model):
+    number = models.IntegerField(unique=True)
+    formingdate = models.DateField(blank=True, null=True)
+    applicantinfo = models.CharField(max_length=255, blank=True, null=True)
+    requestid = models.ForeignKey('Request', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.requestid.passportid.firstname + ' ' + self.requestid.passportid.lastname)
 
 
 @python_2_unicode_compatible
@@ -41,18 +48,6 @@ class Inpassport(models.Model):
 
 
 @python_2_unicode_compatible
-class Negativereference(models.Model):
-    requestid = models.ForeignKey('Request', on_delete=models.CASCADE)
-    personwhomadereference = models.CharField(max_length=255, blank=True, null=True)
-    personwhosignsreference = models.CharField(max_length=255, blank=True, null=True)
-    personswhosignsreferencepost = models.CharField(max_length=255, blank=True, null=True)
-
-    def __str__(self):
-        return str(self.requestid.firstname\
-            + ' ' + self.requestid.lastname + ' negative')
-
-
-@python_2_unicode_compatible
 class Person(models.Model):
     workplace = models.CharField(max_length=255)
     workpost = models.CharField(max_length=255)
@@ -60,7 +55,6 @@ class Person(models.Model):
     startingterm = models.DateField(blank=True, null=True)
     passportid = models.ForeignKey('Registeredpassport', on_delete=models.CASCADE)
     taxcode = models.IntegerField(blank=True, null=True)
-
 
     def __str__(self):
         return self.passportid.firstname + ' ' + self.passportid.lastname + ' ' + self.workplace + ' ' + self.workpost
@@ -70,13 +64,19 @@ class Person(models.Model):
 class Positivereference(models.Model):
     requestid = models.ForeignKey('Request', on_delete=models.CASCADE)
     personid = models.ForeignKey('Person', on_delete=models.CASCADE)
-    personwhomadereference = models.CharField(max_length=255, blank=True, null=True)
-    personwhosignsreference = models.CharField(max_length=255, blank=True, null=True)
-    personswhosignsreferencepost = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return str(self.requestid.firstname \
-               + ' ' + self.requestid.lastname + ' positive')
+        return str(self.requestid.passportid.firstname\
+               + ' ' + self.requestid.passportid.lastname + ' positive')
+
+
+@python_2_unicode_compatible
+class Negativereference(models.Model):
+    requestid = models.ForeignKey('Request', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.requestid.passportid.firstname\
+            + ' ' + self.requestid.passportid.lastname+ ' negative')
 
 
 @python_2_unicode_compatible
@@ -107,5 +107,4 @@ class Request(models.Model):
     taxcode = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return str(self.purpose.encode('utf-8') + ' ' + self.firstname.encode('utf-8') + ' ' + self.lastname.encode(
-            'utf-8'))
+        return str(self.passportid.firstname + ' ' + self.passportid.lastname)
