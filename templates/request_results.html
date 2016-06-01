@@ -1,8 +1,7 @@
 {% extends 'request.html' %}
 
 {% block results %}
-    {% if request %}
-{% if request.isValid %}
+{% if isValid %}
  <table class="table">
                     <thead>
                         <tr>
@@ -12,7 +11,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">{{ request.id }}</th>
+                            <th scope="row">{{ e.number }}</th>
                             <td>Оброблено</td>
                         </tr>
                     </tbody>
@@ -27,22 +26,16 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">{{ request.id }}</th>
-                            <td>Відхилено</td>
+                            <th scope="row">{{ e.number }}</th>
+                            <td>Триває обробка</td>
                         </tr>
                     </tbody>
                 </table>
 {% endif %}
-    {% else %}
-        <br>
-        <p style="color: #2980b9; font-size:larger" align="center">Пошук не дав результатів.</p>
-    {% endif %}
-{% if not export_mode and request.isValid %}
+{% if not export_mode and isValid %}
 
-        <form method="get" action= {{ request.get_full_path }} role="form">
+        <form method="get" action= {{ request.get_full_path }}>
           {% csrf_token %}
-          <button type="submit" class="btn btn-success" name="to_pdf_btn">Завантажити як pdf</button>
-        </form>
-
-        {% endif %}
+          <input type="submit" class="btn btn-success" name="down" value="Завантажити">
+{% endif %}}}
 {% endblock %}

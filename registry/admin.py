@@ -2,14 +2,12 @@ from django.contrib import admin
 
 from models import *
 
-from datetime import date
+# encoding=utf8
+from django.contrib import admin
 
-# try:
-#     pos_extract = PositiveExtract.objects.get(requestid=request)
-# except PositiveExtract.DoesNotExist:
-#     try:
-#         neg_extract = NegativeExtract.objects.get(requestid=request)
-#     except NegativeExtract.DoesNotExist:
+from models import *
+
+from datetime import date
 
 # encoding=utf8
 import sys
@@ -234,6 +232,7 @@ class PReferenceAdmin(admin.ModelAdmin):
 class RequestAdmin(admin.ModelAdmin):
     actions = [generate_response]
     list_display = (
+        'id',
         'date',
         'passportid',
         'purpose',
