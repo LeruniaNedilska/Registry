@@ -1,16 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context
 from models import *
 import pdfkit
+from wkhtmltopdf.views import PDFTemplateResponse
 
 
 def registry(request):
     person = Person.objects.all()
     return render(request, "registry.html", {'person': person})
+
+
+def base(request):
+    return HttpResponseRedirect("/main")
 
 
 def test(request):
@@ -55,9 +60,7 @@ def search(request):
 
 
 def requests(request):
-    if request.method == 'GET':
-        return render(request, "request.html")
-    else:
+    if request.method=='POST':
         s = request.POST.get("search")
         try:
             req = Request.objects.get(id=s)
@@ -66,17 +69,25 @@ def requests(request):
         except:
             return render(request, "request.html", {'error_msg': "Будь ласка, введіть коректні дані."})
         if req.answertype == 0:
-            extracts = Extract.objects.all()
-            for e in extracts:
-                if e.requestid == req.id:
-                    return redirect('request_result', e, 1)
+            pos_extracts = PositiveExtract.objects.all()
+            for e in pos_extracts:
+                if e.requestid == req:
+                    if request.GET.get("down"):
+                        context = {'e': e, 'export_mode': True, 'isValid': True}
+                        return render_to_pdf(request, 'positive_reference.html', context),
+                    return request_result(request, req, 1)
             else:
-                return redirect('request_result', None, 0)
+                neg_extracts = NegativeExtract.objects.all()
+                for e in neg_extracts:
+                    if e.requestid == req.id:
+                        return request_result(request, req, 0)
+                else:
+                    return request_result(request, None, 0)
         else:
             pos_ref = Positivereference.objects.all()
             for p in pos_ref:
                 if p.requestid == req.id:
-                    return redirect('request_result', p, 1)
+                    return redirect(request_result, p, 1)
             else:
                 neg_ref = Negativereference.objects.all()
                 for n in neg_ref:
@@ -84,58 +95,35 @@ def requests(request):
                         return redirect('request_result', n, 0)
                 else:
                     return redirect('request_result', None, 0)
+    else:
+        return render(request, 'request.html')
 
 
 def request_result(request, data, type):
     if data is not None:
-        if data.answertype == 0:
-            extract = get_object_or_404(Extract, pk=data.id)
-            if 'to_pdf_btn' in request.GET:
-                context = {'e': extract, 'export_mode': True}
-                if type == 0:
+       if data.answertype == 0:
+              if type == 1:
+                    pos_ext = get_object_or_404(PositiveExtract, pk=data.id)
+                    person = get_object_or_404(Person, pk=data.id)
+                    context = {'e': pos_ext, 'export_mode': True, 'isValid': True}
+                    return render_to_pdf(request, 'positive_extract.html', context)
+              else:
+                    neg_ext = get_object_or_404(NegativeExtract, pk=data.id)
+                    context = {'e': neg_ext, 'export_mode': True, 'isValid': True}
                     return render_to_pdf('negative_extract.html', context)
-                else:
-                    return render_to_pdf('positive_extract.html', context)
-            else:
-                context = {'e' : extract, 'export_mode': False}
-                return render(request, 'request_results.html', context)
-        if data.answertype == 1:
-            if 'to_pdf_btn' in request.GET:
+       else:
                 if type == 1:
                     pos_ref = get_object_or_404(Positivereference, pk=data.id)
-                    context = {'e': pos_ref, 'export_mode': True}
-                    return render_to_pdf('pos_ref.html', context)
+                    context = {'e': pos_ref, 'export_mode': True, 'isValid': True}
+                    return render_to_pdf('positive_reference.html', context)
                 else:
                     neg_ref = get_object_or_404(Negativereference, pk=data.id)
-                    context = {'e': neg_ref, 'export_mode': True}
-                    return render_to_pdf('neg_ref.html', context)
-            else:
-                if type == 1:
-                    pos_ref = get_object_or_404(Positivereference, pk=data.id)
-                    context = {'e': pos_ref, 'export_mode': False}
-                    return render(request, 'request_results.html', context)
-                else:
-                    neg_ref = get_object_or_404(Negativereference, pk=data.id)
-                    context = {'e': neg_ref, 'export_mode': True}
-                    return render(request, 'request_results.html', context)
+                    context = {'e': neg_ref, 'export_mode': True, 'isValid': True}
+                    return render_to_pdf('negative_reference.html', context)
+    else:
+        context = {'isValid': False}
+        return render(request, 'request_results.html', context)
 
 
-def render_to_pdf(template_src, context_dict):
-    template = get_template(template_src)
-    context = Context(context_dict)
-    html = template.render(context)
-
-    options = {
-        'page-size': 'Letter',
-        'margin-top': '0.75in',
-        'margin-right': '0.75in',
-        'margin-bottom': '0.75in',
-        'margin-left': '0.75in',
-        'encoding': "UTF-8"
-        }
-
-    pdf = pdfkit.from_string(html, False, options=options)
-
-    response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=output.pdf'
-    return response
+def render_to_pdf(request, template_src, context_dict):
+    return render(request, template_src, context=context_dict)
